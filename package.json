@@ -1,0 +1,12 @@
+{
+  "name": "efoody",
+  "version": "1.0.0",
+  "description": "Restaurant application using MERN stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Emmanuel Egomson",
+  "license": "ISC"
+}
