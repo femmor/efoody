@@ -3,6 +3,7 @@ import { isEmpty, isEmail, equals } from 'validator';
 import { Link } from 'react-router-dom';
 import signUp from '../../images/signup.png';
 import { Alert, Loader } from '../../components';
+import { signup } from '../../api/auth';
 
 import './SignUp.css';
 
@@ -11,14 +12,14 @@ const SignUp = () => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    password2: '',
+    username: 'fegomson',
+    email: 'fegomson@gmail.com',
+    password: '123456',
+    password2: '123456',
     isError: false,
-    successMsg: false,
+    successMsg: '',
     errorMsg: '',
-    loading: true,
+    loading: false,
   });
 
   const {
@@ -81,12 +82,31 @@ const SignUp = () => {
       });
       toggleAlert();
     } else {
+      const { username, email, password } = formData;
+      const userData = { username, email, password };
       setFormData({
         ...formData,
-        isError: false,
-        successMsg: 'You are registered successfully!',
+        loading: true,
       });
-      toggleAlert();
+      signup(userData)
+        .then(response => {
+          console.log(response);
+          setFormData({
+            username: '',
+            email: '',
+            password: '',
+            password2: '',
+            loading: false,
+            successMsg: response.data.successMessage,
+          });
+        })
+        .catch(error => {
+          console.log('Axios signup error: ' + error);
+          setFormData({
+            loading: false,
+            errorMsg: error.errorMessage,
+          });
+        });
     }
   };
 
