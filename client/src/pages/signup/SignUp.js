@@ -101,10 +101,11 @@ const SignUp = () => {
           });
         })
         .catch(error => {
-          console.log('Axios signup error: ' + error);
+          setShowAlert(true);
           setFormData({
             loading: false,
-            errorMsg: error.errorMessage,
+            isError: true,
+            errorMsg: error.response.data.errorMessage,
           });
         });
     }
