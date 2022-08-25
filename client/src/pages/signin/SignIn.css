@@ -1,0 +1,10 @@
+.signin-link {
+  text-decoration: none;
+}
+
+/* Media Queries */
+@media screen and (max-width: 990px) {
+  .signin-img {
+    display: none;
+  }
+}

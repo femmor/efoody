@@ -4,7 +4,7 @@ import { Home, NotFound, SignIn, SignUp } from '../pages';
 
 const App = () => {
   return (
-    <div className="App">
+    <>
       <Router>
         <Header />
         <Routes>
@@ -14,7 +14,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </div>
+    </>
   );
 };
 

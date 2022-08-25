@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { isEmpty, isEmail, equals } from 'validator';
 import { Link } from 'react-router-dom';
-import signUp from '../../images/signup.png';
 import { Loader } from '../../components';
 import { showErrorMsg, showSuccessMsg } from '../../helpers/message';
 import { signup } from '../../api/auth';
@@ -17,8 +16,8 @@ const SignUp = () => {
     email: 'fegomson@gmail.com',
     password: '123456',
     password2: '123456',
-    successMsg: '',
-    errorMsg: '',
+    successMsg: false,
+    errorMsg: false,
     loading: false,
   });
 
@@ -113,16 +112,13 @@ const SignUp = () => {
 
   const showSignUpForm = () => (
     <>
-      <div className="col-lg-7 text-center text-lg-start">
-        <img className="signup-img" src={signUp} alt="Signup" />
-      </div>
-      <div className="col-md-10 mx-auto col-lg-5">
+      <div className="col-md-10 mx-auto col-lg-6">
         <form
           className="p-4 p-md-5 border rounded-3 bg-light"
           onSubmit={handleSubmit}
           noValidate
         >
-          <h2 className="text-center text-primary mb-4">Sign In</h2>
+          <h2 className="text-center text-primary mb-4">Create an account</h2>
           <div className="form-floating mb-3">
             {/* username */}
             <div className="input-group">
