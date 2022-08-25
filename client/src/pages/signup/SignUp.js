@@ -2,21 +2,21 @@ import { useState, useRef, useEffect } from 'react';
 import { isEmpty, isEmail, equals } from 'validator';
 import { Link } from 'react-router-dom';
 import signUp from '../../images/signup.png';
-import { Alert, Loader } from '../../components';
+import { Loader } from '../../components';
+import { showErrorMsg, showSuccessMsg } from '../../helpers/message';
 import { signup } from '../../api/auth';
 
 import './SignUp.css';
 
 const SignUp = () => {
-  const usernameRef = useRef();
-
+  const usernameRef = useRef(null);
   const [showAlert, setShowAlert] = useState(false);
+
   const [formData, setFormData] = useState({
     username: 'fegomson',
     email: 'fegomson@gmail.com',
     password: '123456',
     password2: '123456',
-    isError: false,
     successMsg: '',
     errorMsg: '',
     loading: false,
@@ -27,7 +27,6 @@ const SignUp = () => {
     email,
     password,
     password2,
-    isError,
     successMsg,
     errorMsg,
     loading,
@@ -38,14 +37,12 @@ const SignUp = () => {
   };
 
   const handleInputChange = e => {
-    const value = e.target.value;
-    const name = e.target.name;
+    const { name, value } = e.target;
 
     setFormData({
       ...formData,
       [name]: value,
     });
-    setShowAlert(false);
   };
 
   const handleSubmit = e => {
@@ -54,6 +51,7 @@ const SignUp = () => {
       ...formData,
       loading: false,
     });
+
     // client-side validation
     if (
       isEmpty(username) ||
@@ -63,24 +61,21 @@ const SignUp = () => {
     ) {
       setFormData({
         ...formData,
-        isError: true,
         errorMsg: 'All fields are required',
       });
-      toggleAlert();
+      setShowAlert(true);
     } else if (!isEmail(email)) {
       setFormData({
         ...formData,
-        isError: true,
         errorMsg: 'Please enter a valid email',
       });
-      toggleAlert();
+      setShowAlert(true);
     } else if (!equals(password, password2)) {
       setFormData({
         ...formData,
-        isError: true,
         errorMsg: 'Passwords do not match',
       });
-      toggleAlert();
+      setShowAlert(true);
     } else {
       const { username, email, password } = formData;
       const userData = { username, email, password };
@@ -90,7 +85,6 @@ const SignUp = () => {
       });
       signup(userData)
         .then(response => {
-          console.log(response);
           setFormData({
             username: '',
             email: '',
@@ -101,13 +95,12 @@ const SignUp = () => {
           });
         })
         .catch(error => {
-          setShowAlert(true);
           setFormData({
             loading: false,
-            isError: true,
             errorMsg: error.response.data.errorMessage,
           });
         });
+      setShowAlert(true);
     }
   };
 
@@ -163,7 +156,6 @@ const SignUp = () => {
             </div>
 
             {/* password */}
-
             <div className="form-floating mb-3">
               <div className="input-group mb-3">
                 <span className="input-group-text">
@@ -221,14 +213,8 @@ const SignUp = () => {
   return (
     <div className="container col-xl-10 col-xxl-8 px-4 py-5">
       <div className="row align-items-center g-lg-5 py-5">
-        {showAlert && (
-          <Alert
-            type={isError ? 'danger' : 'success'}
-            title={isError ? 'Error' : 'Success'}
-            msg={isError ? errorMsg : successMsg}
-            onClick={toggleAlert}
-          />
-        )}
+        {errorMsg && showErrorMsg(errorMsg, toggleAlert)}
+        {successMsg && showSuccessMsg(successMsg, toggleAlert)}
         {loading && <Loader />}
         {showSignUpForm()}
       </div>
