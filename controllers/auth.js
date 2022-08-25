@@ -13,7 +13,8 @@ export const signupController = async (req, res) => {
       });
     }
 
-    const newUser = await User();
+    // Create a new user
+    const newUser = new User();
     newUser.username = username;
     newUser.email = email;
 
@@ -21,13 +22,17 @@ export const signupController = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(password, salt);
 
+    // Save new user to database
     await newUser.save();
 
+    // Success message response
     res.json({
       successMessage: 'Registration successful, please sign in',
     });
   } catch (error) {
-    console.log('signupController error ', error);
-    res.status(500).json({ errorMessage: 'Server error.' });
+    res.status(500).json({
+      errorMessage:
+        'Oops!. Something went wrong on the server, please try again!',
+    });
   }
 };
