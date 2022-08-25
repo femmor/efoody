@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { isEmpty, isEmail, equals } from 'validator';
 import { Link } from 'react-router-dom';
 
 import './SignIn.css';
 import { Loader } from '../../components/index';
 import { showErrorMsg } from '../../helpers/message';
+import { signin } from '../../api/auth';
 
 const SignIn = () => {
   const emailRef = useRef(null);
@@ -95,6 +97,45 @@ const SignIn = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    // client-side validation
+    if (isEmpty(email) || isEmpty(password)) {
+      setFormData({
+        ...formData,
+        errorMsg: 'All fields are required',
+      });
+      setShowAlert(true);
+    } else if (!isEmail(email)) {
+      setFormData({
+        ...formData,
+        errorMsg: 'Please enter a valid email',
+      });
+      setShowAlert(true);
+    } else {
+      const { email, password } = formData;
+      const userData = { email, password };
+      setFormData({
+        ...formData,
+        loading: true,
+      });
+      signin(userData)
+        .then(response => {
+          setFormData({
+            email: '',
+            password: '',
+            loading: false,
+            errorMsg: false,
+            redirectToDashboard: true,
+          });
+        })
+        .catch(error => {
+          setFormData({
+            loading: false,
+            errorMsg: error.response.data.errorMessage,
+          });
+        });
+      setShowAlert(true);
+    }
   };
 
   const handleInputChange = e => {

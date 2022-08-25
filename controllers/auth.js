@@ -36,3 +36,7 @@ export const signupController = async (req, res) => {
     });
   }
 };
+
+export const signinController = async (req, res) => {
+  const { email, password } = req.body;
+};
