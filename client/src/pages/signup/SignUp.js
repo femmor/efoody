@@ -47,6 +47,7 @@ const SignUp = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
     setFormData({
       ...formData,
       loading: false,
@@ -108,7 +109,7 @@ const SignUp = () => {
     if (usernameRef.current) {
       usernameRef.current.focus();
     }
-  }, [usernameRef]);
+  }, []);
 
   const showSignUpForm = () => (
     <>
