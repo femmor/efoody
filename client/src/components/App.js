@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Header } from '../components';
+import { Header, AdminRoutes, UserRoutes } from '../components';
 import {
   AdminDashboard,
   Home,
@@ -15,11 +15,15 @@ const App = () => {
       <Router>
         <Header />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route element={<AdminRoutes />}>
+            <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
+          </Route>
+          <Route element={<UserRoutes />}>
+            <Route exact path="/user/dashboard" element={<UserDashboard />} />
+          </Route>
+          <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/user/dashboard" element={<UserDashboard />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
