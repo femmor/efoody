@@ -1,8 +1,15 @@
-import { Link } from 'react-router-dom';
-import { isAuthenticated } from '../../helpers/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import { isAuthenticated, logout } from '../../helpers/auth';
 import { withRouter } from '../../helpers/withRouter';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout(() => {
+      navigate('/signin');
+    });
+  };
+
   // views
   const showNavigation = () => {
     return (
@@ -63,10 +70,10 @@ const Header = () => {
               )}
               {isAuthenticated() && (
                 <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/">
+                  <li className="nav-item" onClick={handleLogout}>
+                    <button className="btn btn-link text-secondary text-decoration-none px-0">
                       Logout
-                    </Link>
+                    </button>
                   </li>
                 </>
               )}
