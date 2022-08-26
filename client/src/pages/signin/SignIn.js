@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { isEmpty, isEmail, equals } from 'validator';
+import { isEmpty, isEmail } from 'validator';
 import { Link } from 'react-router-dom';
 
 import './SignIn.css';
 import { Loader } from '../../components/index';
 import { showErrorMsg } from '../../helpers/message';
 import { signin } from '../../api/auth';
-import { setAuthentication } from '../../helpers/auth';
+import { setAuthentication, isAuthenticated } from '../../helpers/auth';
 
 const SignIn = () => {
   const emailRef = useRef(null);
@@ -17,10 +17,9 @@ const SignIn = () => {
     password: '123456',
     errorMsg: false,
     loading: false,
-    redirectToDashboard: false,
   });
 
-  const { email, password, errorMsg, redirectToDashboard, loading } = formData;
+  const { email, password, errorMsg, loading } = formData;
 
   const toggleAlert = () => {
     setShowAlert(!showAlert);
@@ -123,7 +122,11 @@ const SignIn = () => {
         .then(response => {
           const { token, user } = response.data;
           setAuthentication(token, user);
-          console.log(user);
+          if (isAuthenticated() && isAuthenticated().role === 1) {
+            console.log('Welcome Admin! - Redirecting to admin dashboard');
+          } else {
+            console.log('Welcome User! - Redirecting to user dashboard');
+          }
         })
         .catch(error => {
           console.log(error);
