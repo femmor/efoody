@@ -7,6 +7,7 @@ import { signup } from '../../api/auth';
 
 import './SignUp.css';
 import { isAuthenticated } from '../../helpers/auth';
+import { FaUserPlus } from 'react-icons/fa';
 
 const SignUp = () => {
   const usernameRef = useRef(null);
@@ -129,7 +130,12 @@ const SignUp = () => {
           onSubmit={handleSubmit}
           noValidate
         >
-          <h2 className="text-center text-primary mb-4">Create an account</h2>
+          <h2 className="text-center text-primary mb-4">
+            <span className="d-flex align-items-center justify-content-center gap-2">
+              <FaUserPlus />
+              Sign Up
+            </span>
+          </h2>
           <div className="form-floating mb-3">
             {/* username */}
             <div className="input-group">

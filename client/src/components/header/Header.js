@@ -1,6 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { isAuthenticated, logout } from '../../helpers/auth';
 import { withRouter } from '../../helpers/withRouter';
+import { FaHome, FaUserLock, FaUserPlus } from 'react-icons/fa';
+import { GoDashboard } from 'react-icons/go';
+import { MdLogout } from 'react-icons/md';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -34,17 +37,29 @@ const Header = () => {
               {!isAuthenticated() && (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/">
+                    <Link
+                      className="nav-link d-flex align-items-center gap-1"
+                      to="/"
+                    >
+                      <FaHome size={15} />
                       Home
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/signup">
+                    <Link
+                      className="nav-link d-flex align-items-center gap-1"
+                      to="/signup"
+                    >
+                      <FaUserPlus size={15} />
                       Sign Up
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/signin">
+                    <Link
+                      className="nav-link d-flex align-items-center gap-1"
+                      to="/signin"
+                    >
+                      <FaUserLock size={15} />
                       Sign In
                     </Link>
                   </li>
@@ -53,8 +68,12 @@ const Header = () => {
               {isAuthenticated() && isAuthenticated().role === 0 && (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/user/dashboard">
-                      User Dashboard
+                    <Link
+                      className="nav-link d-flex align-items-center gap-1"
+                      to="/user/dashboard"
+                    >
+                      <GoDashboard size={15} />
+                      Dashboard
                     </Link>
                   </li>
                 </>
@@ -62,8 +81,12 @@ const Header = () => {
               {isAuthenticated() && isAuthenticated().role === 1 && (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin/dashboard">
-                      Admin Dashboard
+                    <Link
+                      className="nav-link d-flex align-items-center gap-1"
+                      to="/admin/dashboard"
+                    >
+                      <GoDashboard size={15} />
+                      Dashboard
                     </Link>
                   </li>
                 </>
@@ -71,7 +94,8 @@ const Header = () => {
               {isAuthenticated() && (
                 <>
                   <li className="nav-item" onClick={handleLogout}>
-                    <button className="btn btn-link text-secondary text-decoration-none px-0">
+                    <button className="btn btn-link text-secondary text-decoration-none px-0 d-flex align-items-center gap-1">
+                      <MdLogout />
                       Logout
                     </button>
                   </li>

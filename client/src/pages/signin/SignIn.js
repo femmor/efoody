@@ -7,6 +7,7 @@ import { Loader } from '../../components/index';
 import { showErrorMsg } from '../../helpers/message';
 import { signin } from '../../api/auth';
 import { setAuthentication, isAuthenticated } from '../../helpers/auth';
+import { FaUserLock } from 'react-icons/fa';
 
 const SignIn = () => {
   const emailRef = useRef(null);
@@ -49,7 +50,12 @@ const SignIn = () => {
           onSubmit={handleSubmit}
           noValidate
         >
-          <h2 className="text-center text-primary mb-4">Sign In</h2>
+          <h2 className="text-primary mb-4">
+            <span className="d-flex align-items-center justify-content-center gap-2">
+              <FaUserLock size={28} />
+              Sign In
+            </span>
+          </h2>
           <div className="form-floating mb-3">
             {/* email */}
             <div className="input-group mb-3">
@@ -141,7 +147,11 @@ const SignIn = () => {
           }
         })
         .catch(error => {
-          console.log(error);
+          setFormData({
+            ...formData,
+            loading: false,
+            errorMsg: error.response.data.errorMessage,
+          });
         });
       setShowAlert(true);
     }
