@@ -1,6 +1,6 @@
-import { check, validationResult } from 'express-validator';
+const { check, validationResult } = require('express-validator');
 
-export const signupValidator = [
+const signupValidator = [
   check('username').not().isEmpty().trim().withMessage('All fields required'),
   check('email')
     .isEmail()
@@ -11,7 +11,7 @@ export const signupValidator = [
     .withMessage('Password must be at least 6 characters long'),
 ];
 
-export const signinValidator = [
+const signinValidator = [
   check('email')
     .isEmail()
     .normalizeEmail()
@@ -21,7 +21,7 @@ export const signinValidator = [
     .withMessage('Password must be at least 6 characters long'),
 ];
 
-export const validatorResult = (req, res, next) => {
+const validatorResult = (req, res, next) => {
   const result = validationResult(req);
   const hasErrors = !result.isEmpty();
 
@@ -32,3 +32,5 @@ export const validatorResult = (req, res, next) => {
 
   next();
 };
+
+module.exports = { validatorResult, signupValidator, signinValidator };
