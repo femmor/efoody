@@ -6,6 +6,7 @@ import './SignIn.css';
 import { Loader } from '../../components/index';
 import { showErrorMsg } from '../../helpers/message';
 import { signin } from '../../api/auth';
+import { setAuthentication } from '../../helpers/auth';
 
 const SignIn = () => {
   const emailRef = useRef(null);
@@ -120,19 +121,12 @@ const SignIn = () => {
       });
       signin(userData)
         .then(response => {
-          setFormData({
-            email: '',
-            password: '',
-            loading: false,
-            errorMsg: false,
-            redirectToDashboard: true,
-          });
+          const { token, user } = response.data;
+          setAuthentication(token, user);
+          console.log(user);
         })
         .catch(error => {
-          setFormData({
-            loading: false,
-            errorMsg: error.response.data.errorMessage,
-          });
+          console.log(error);
         });
       setShowAlert(true);
     }
