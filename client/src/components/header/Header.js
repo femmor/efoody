@@ -2,8 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { isAuthenticated, logout } from '../../helpers/auth';
 import { withRouter } from '../../helpers/withRouter';
 import { FaHome, FaUserLock, FaUserPlus } from 'react-icons/fa';
-import { GoDashboard } from 'react-icons/go';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdDashboard } from 'react-icons/md';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,7 +16,7 @@ const Header = () => {
   const showNavigation = () => {
     return (
       <nav className="navbar navbar-expand-lg bg-light">
-        <div className="container-fluid">
+        <div className="container">
           <Link className="navbar-brand" to="/">
             Logo
           </Link>
@@ -72,7 +71,7 @@ const Header = () => {
                       className="nav-link d-flex align-items-center gap-1"
                       to="/user/dashboard"
                     >
-                      <GoDashboard size={15} />
+                      <MdDashboard size={15} />
                       Dashboard
                     </Link>
                   </li>
@@ -85,7 +84,7 @@ const Header = () => {
                       className="nav-link d-flex align-items-center gap-1"
                       to="/admin/dashboard"
                     >
-                      <GoDashboard size={15} />
+                      <MdDashboard size={15} />
                       Dashboard
                     </Link>
                   </li>
