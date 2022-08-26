@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { isEmpty, isEmail } from 'validator';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './SignIn.css';
 import { Loader } from '../../components/index';
@@ -11,6 +11,8 @@ import { setAuthentication, isAuthenticated } from '../../helpers/auth';
 const SignIn = () => {
   const emailRef = useRef(null);
   const [showAlert, setShowAlert] = useState(false);
+
+  let navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: 'fegomson@gmail.com',
@@ -30,6 +32,14 @@ const SignIn = () => {
       emailRef.current.focus();
     }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated() && isAuthenticated().role === 1) {
+      navigate('/admin/dashboard');
+    } else if (isAuthenticated() && isAuthenticated().role === 0) {
+      navigate('/user/dashboard');
+    }
+  }, [navigate]);
 
   const showSignInForm = () => (
     <div>
@@ -124,8 +134,10 @@ const SignIn = () => {
           setAuthentication(token, user);
           if (isAuthenticated() && isAuthenticated().role === 1) {
             console.log('Welcome Admin! - Redirecting to admin dashboard');
+            navigate('/admin/dashboard');
           } else {
             console.log('Welcome User! - Redirecting to user dashboard');
+            navigate('/user/dashboard');
           }
         })
         .catch(error => {

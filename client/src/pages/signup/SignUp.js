@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { isEmpty, isEmail, equals } from 'validator';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Loader } from '../../components';
 import { showErrorMsg, showSuccessMsg } from '../../helpers/message';
 import { signup } from '../../api/auth';
 
 import './SignUp.css';
+import { isAuthenticated } from '../../helpers/auth';
 
 const SignUp = () => {
   const usernameRef = useRef(null);
   const [showAlert, setShowAlert] = useState(false);
+
+  let navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: 'fegomson',
@@ -109,6 +112,14 @@ const SignUp = () => {
       usernameRef.current.focus();
     }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated() && isAuthenticated().role === 1) {
+      navigate('/admin/dashboard');
+    } else if (isAuthenticated() && isAuthenticated().role === 0) {
+      navigate('/user/dashboard');
+    }
+  }, [navigate]);
 
   const showSignUpForm = () => (
     <>
