@@ -1,3 +1,5 @@
+const category = require('../models/Category');
+
 exports.create = (req, res) => {
   console.log(req.user);
 
