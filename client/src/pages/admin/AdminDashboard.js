@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { isEmpty } from 'validator';
+import { Loader } from '../../components';
+import { showErrorMsg, showSuccessMsg } from '../../helpers/message';
 import {
   MdDashboard,
   MdCategory,
@@ -10,13 +13,42 @@ import { createCategory } from '../../api/category';
 
 const AdminDashboard = () => {
   const [category, setCategory] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleCategoryChange = e => {
+    setErrorMsg('');
+    setSuccessMsg('');
+    setCategory(e.target.value);
+  };
 
   const addCategory = e => {
     e.preventDefault();
 
-    const data = { category };
+    if (isEmpty(category)) {
+      setErrorMsg('Please enter a category name');
+      setLoading(false);
+    } else {
+      const data = { category };
+      setLoading(true);
+      createCategory(data)
+        .then(response => {
+          setLoading(false);
+          setSuccessMsg(response.data.successMessage);
+          console.log(response.data);
+        })
+        .catch(error => {
+          setLoading(false);
+          setErrorMsg(error.response.data.errorMessage);
+        });
+    }
+  };
 
-    createCategory(data);
+  const handleMessages = () => {
+    setErrorMsg('');
+    setSuccessMsg('');
+    setLoading(false);
   };
 
   // Views
@@ -64,7 +96,7 @@ const AdminDashboard = () => {
   );
 
   const showCategoryModal = () => (
-    <div id="addCategoryModal" className="modal fade">
+    <div id="addCategoryModal" className="modal fade" onClick={handleMessages}>
       <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
           <form onSubmit={addCategory}>
@@ -75,14 +107,22 @@ const AdminDashboard = () => {
               </button>
             </div>
             <div className="modal-body my-2">
-              <label className="text-secondary">Category</label>
-              <input
-                type="text"
-                value={category}
-                onChange={e => setCategory(e.target.value)}
-                className="form-control"
-                placeholder="Category name"
-              />
+              {errorMsg && showErrorMsg(errorMsg)}
+              {successMsg && showSuccessMsg(successMsg)}
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <label className="text-secondary">Category</label>
+                  <input
+                    type="text"
+                    value={category}
+                    onChange={handleCategoryChange}
+                    className="form-control"
+                    placeholder="Category name"
+                  />
+                </>
+              )}
             </div>
             <div className="modal-footer">
               <button

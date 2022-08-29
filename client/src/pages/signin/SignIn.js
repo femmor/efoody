@@ -3,7 +3,7 @@ import { isEmpty, isEmail } from 'validator';
 import { Link, useNavigate } from 'react-router-dom';
 
 import './SignIn.css';
-import { Loader } from '../../components/index';
+import { Loader } from '../../components';
 import { showErrorMsg } from '../../helpers/message';
 import { signin } from '../../api/auth';
 import { setAuthentication, isAuthenticated } from '../../helpers/auth';
