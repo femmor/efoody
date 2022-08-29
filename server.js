@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const connectDB = require('./database/db');
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/category');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 dotenv.config();
@@ -13,6 +14,7 @@ dotenv.config();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.use('/api/auth', authRoutes);
