@@ -1,11 +1,20 @@
-const category = require('../models/Category');
+const Category = require('../models/Category');
 
-exports.create = (req, res) => {
-  console.log(req.user);
+exports.create = async (req, res) => {
+  const { category } = req.body;
 
-  setTimeout(() => {
-    res.json({
-      successMessage: `${req.body.category} category created successfully!`,
+  try {
+    let newCategory = new Category();
+
+    newCategory.category = category;
+
+    newCategory = await newCategory.save();
+
+    res.status(200).json({
+      successMessage: `${newCategory.category} was successfully created!`,
     });
-  }, 5000);
+  } catch (error) {
+    console.log('create category error: ', error);
+    res.status(500).json({ errorMessage: 'Please try again later.' });
+  }
 };
