@@ -23,6 +23,7 @@ const AdminDashboard = () => {
     setCategory(e.target.value);
   };
 
+  // Category logic
   const addCategory = e => {
     e.preventDefault();
 
@@ -37,7 +38,6 @@ const AdminDashboard = () => {
           setLoading(false);
           setSuccessMsg(response.data.successMessage);
           setCategory('');
-          console.log(response.data);
         })
         .catch(error => {
           setLoading(false);
@@ -51,6 +51,13 @@ const AdminDashboard = () => {
     setSuccessMsg('');
     setLoading(false);
   };
+
+  // Food Item logic
+  const addFood = e => {
+    e.preventDefault();
+  };
+
+  const handleFoodItemChange = () => {};
 
   // Views
   const showHeader = () => (
@@ -82,12 +89,20 @@ const AdminDashboard = () => {
             </button>
           </div>
           <div className="col-md-4 d-grid mb-2">
-            <button className="btn btn-outline-warning d-flex align-items-center gap-1 justify-content-center">
+            <button
+              className="btn btn-outline-warning d-flex align-items-center gap-1 justify-content-center"
+              data-bs-toggle="modal"
+              data-bs-target="#addFoodModal"
+            >
               <MdOutlineFastfood /> Add Food
             </button>
           </div>
-          <div className="col-md-4 d-grid ">
-            <button className="btn btn-xs btn-outline-success d-flex align-items-center gap-1 justify-content-center">
+          <div className="col-md-4 d-grid mb-2">
+            <button
+              className="btn btn-outline-success d-flex align-items-center gap-1 justify-content-center"
+              data-bs-toggle="modal"
+              data-bs-target="#ordersModal"
+            >
               <RiCurrencyFill /> View Orders
             </button>
           </div>
@@ -103,7 +118,10 @@ const AdminDashboard = () => {
           <form onSubmit={addCategory}>
             <div className="modal-header bg-info text-white">
               <h5 className="modal-title">Add Category</h5>
-              <button className="btn btn-outline close" data-bs-dismiss="modal">
+              <button
+                className="btn btn-outline close text-white"
+                data-bs-dismiss="modal"
+              >
                 <MdOutlineClose size={25} />
               </button>
             </div>
@@ -143,11 +161,49 @@ const AdminDashboard = () => {
     </div>
   );
 
+  const showFoodModal = () => (
+    <div id="addFoodModal" className="modal fade" onClick={handleMessages}>
+      <div className="modal-dialog modal-dialog-centered modal-lg">
+        <div className="modal-content">
+          <form onSubmit={addFood}>
+            <div className="modal-header bg-warning text-white">
+              <h5 className="modal-title">Add Food</h5>
+              <button
+                className="btn btn-outline close text-white"
+                data-bs-dismiss="modal"
+              >
+                <MdOutlineClose size={25} />
+              </button>
+            </div>
+            <div className="modal-body my-2">
+              {errorMsg && showErrorMsg(errorMsg)}
+              {successMsg && showSuccessMsg(successMsg)}
+              {loading ? <Loader /> : <></>}
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn btn-secondary"
+                type="button"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button className="btn btn-warning text-white" type="submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <section className="">
       {showHeader()}
       {showActionBtms()}
       {showCategoryModal()}
+      {showFoodModal()}
     </section>
   );
 };
