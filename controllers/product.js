@@ -1,3 +1,9 @@
 exports.create = async (req, res) => {
-  console.log(req.body);
+  console.log('req body', req.body);
+  console.log('req file', req.file);
+  console.log('req user', req.user);
+
+  res.json({
+    message: 'From product controller',
+  });
 };
