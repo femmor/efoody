@@ -10,6 +10,7 @@ import {
 } from 'react-icons/md';
 import { RiCurrencyFill } from 'react-icons/ri';
 import { createCategory, getCategories } from '../../api/category';
+import { createProduct } from '../../api/product';
 
 const AdminDashboard = () => {
   const [category, setCategory] = useState('');
@@ -18,7 +19,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState(null);
   const [productData, setProductData] = useState({
-    productImage: '',
+    productImage: null,
     productName: '',
     productDesc: '',
     productPrice: '',
@@ -101,10 +102,36 @@ const AdminDashboard = () => {
     });
   };
 
-  const addFood = e => {
+  const handleProductSubmit = e => {
     e.preventDefault();
 
-    console.log(productData);
+    // Client side validation
+    if (productImage === null) {
+      setErrorMsg('Please select an image');
+    } else if (isEmpty(productName)) {
+      setErrorMsg('Please add a product name');
+    } else if (isEmpty(productDesc)) {
+      setErrorMsg('Please add a product description');
+    } else if (isEmpty(productPrice)) {
+      setErrorMsg('Please add a product price');
+    } else if (isEmpty(productCategory)) {
+      setErrorMsg('Please add a product category');
+    } else if (isEmpty(productQty)) {
+      setErrorMsg('Please add a product quantity');
+    } else {
+      let formData = new FormData();
+
+      formData.append('productImage', productImage);
+      formData.append('productName', productName);
+      formData.append('productDesc', productDesc);
+      formData.append('productCategory', productCategory);
+      formData.append('productPrice', productPrice);
+      formData.append('productQty', productQty);
+
+      createProduct(formData)
+        .then(response => console.log('Server response: ', response))
+        .catch(error => console.log(error));
+    }
   };
 
   // Views
@@ -213,7 +240,7 @@ const AdminDashboard = () => {
     <div id="addFoodModal" className="modal fade" onClick={handleMessages}>
       <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
-          <form onSubmit={addFood}>
+          <form onSubmit={handleProductSubmit}>
             <div className="modal-header bg-warning text-white">
               <h5 className="modal-title">Add Food</h5>
               <button
@@ -285,8 +312,9 @@ const AdminDashboard = () => {
                         aria-label="Category select"
                         name="productCategory"
                         onChange={handleProductChange}
+                        defaultValue="selected"
                       >
-                        <option disabled value="">
+                        <option disabled value="selected">
                           Select a category
                         </option>
                         {categories &&

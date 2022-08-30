@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const connectDB = require('./database/db');
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/category');
+const productRoutes = require('./routes/product');
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(cookieParser());
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/product', productRoutes);
 
 // Connect DB
 connectDB();
