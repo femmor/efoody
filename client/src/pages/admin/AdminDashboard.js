@@ -178,7 +178,71 @@ const AdminDashboard = () => {
             <div className="modal-body my-2">
               {errorMsg && showErrorMsg(errorMsg)}
               {successMsg && showSuccessMsg(successMsg)}
-              {loading ? <Loader /> : <></>}
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <div className="mb-3">
+                    <label
+                      for="custom-file"
+                      className="form-label text-secondary"
+                    >
+                      Product image
+                    </label>
+                    <input className="form-control" type="file" />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-group">Name</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Food name"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-group text-secondary">
+                      Description
+                    </label>
+                    <textarea
+                      className="form-control"
+                      type="text"
+                      placeholder="Food description"
+                      rows={3}
+                    ></textarea>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-group text-secondary">Price</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div className="mb-3 row">
+                    <div className="col-md-6 form-group">
+                      <label className="text-secondary">Category</label>
+                      <select class="form-select" aria-label="Category select">
+                        <option disabled selected>
+                          Select a category
+                        </option>
+                        <option>Pasta</option>
+                        <option>Desserts</option>
+                        <option>Drinks</option>
+                      </select>
+                    </div>
+                    <div className="col-md-6 form-group">
+                      <label className="text-secondary">Quantity</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        min={1}
+                        max={1000}
+                        placeholder={1}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="modal-footer">
               <button
