@@ -19,7 +19,11 @@ const AdminDashboard = () => {
   const [categories, setCategories] = useState(null);
 
   const loadCategories = async () => {
-    await getCategories();
+    await getCategories()
+      .then(response => {
+        setCategories(response.data.categories);
+      })
+      .catch(err => console.error(err));
   };
 
   useEffect(() => {
@@ -192,10 +196,7 @@ const AdminDashboard = () => {
               ) : (
                 <>
                   <div className="mb-3">
-                    <label
-                      for="custom-file"
-                      className="form-label text-secondary"
-                    >
+                    <label className="form-label text-secondary">
                       Product image
                     </label>
                     <input className="form-control" type="file" />
@@ -230,13 +231,19 @@ const AdminDashboard = () => {
                   <div className="mb-3 row">
                     <div className="col-md-6 form-group">
                       <label className="text-secondary">Category</label>
-                      <select class="form-select" aria-label="Category select">
-                        <option disabled selected>
+                      <select
+                        className="form-select"
+                        aria-label="Category select"
+                        defaultValue="selected"
+                      >
+                        <option disabled value="selected">
                           Select a category
                         </option>
-                        <option>Pasta</option>
-                        <option>Desserts</option>
-                        <option>Drinks</option>
+                        {categories?.map(c => (
+                          <option value={c._id} key={c._id}>
+                            {c.category}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className="col-md-6 form-group">
