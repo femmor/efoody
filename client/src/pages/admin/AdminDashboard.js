@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isEmpty } from 'validator';
 import { Loader } from '../../components';
 import { showErrorMsg, showSuccessMsg } from '../../helpers/message';
@@ -9,13 +9,22 @@ import {
   MdOutlineClose,
 } from 'react-icons/md';
 import { RiCurrencyFill } from 'react-icons/ri';
-import { createCategory } from '../../api/category';
+import { createCategory, getCategories } from '../../api/category';
 
 const AdminDashboard = () => {
   const [category, setCategory] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState(null);
+
+  const loadCategories = async () => {
+    await getCategories();
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
 
   const handleCategoryChange = e => {
     setErrorMsg('');
