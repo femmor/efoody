@@ -17,6 +17,23 @@ const AdminDashboard = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState(null);
+  const [productData, setProductData] = useState({
+    productImage: '',
+    productName: '',
+    productDesc: '',
+    productPrice: '',
+    productCategory: '',
+    productQty: '',
+  });
+
+  const {
+    productImage,
+    productName,
+    productDesc,
+    productPrice,
+    productCategory,
+    productQty,
+  } = productData;
 
   const loadCategories = async () => {
     await getCategories()
@@ -28,7 +45,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     loadCategories();
-  }, []);
+  }, [loading]);
 
   const handleCategoryChange = e => {
     setErrorMsg('');
@@ -66,11 +83,29 @@ const AdminDashboard = () => {
   };
 
   // Food Item logic
-  const addFood = e => {
-    e.preventDefault();
+  const handleProductChange = e => {
+    const { name, value } = e.target;
+
+    setProductData({
+      ...productData,
+      [name]: value,
+    });
   };
 
-  const handleFoodItemChange = () => {};
+  const handleProductImage = e => {
+    const { name, files } = e.target;
+
+    setProductData({
+      ...productData,
+      [name]: files[0],
+    });
+  };
+
+  const addFood = e => {
+    e.preventDefault();
+
+    console.log(productData);
+  };
 
   // Views
   const showHeader = () => (
@@ -199,7 +234,12 @@ const AdminDashboard = () => {
                     <label className="form-label text-secondary">
                       Product image
                     </label>
-                    <input className="form-control" type="file" />
+                    <input
+                      className="form-control"
+                      type="file"
+                      name="productImage"
+                      onChange={handleProductImage}
+                    />
                   </div>
                   <div className="mb-3">
                     <label className="form-group">Name</label>
@@ -207,6 +247,9 @@ const AdminDashboard = () => {
                       className="form-control"
                       type="text"
                       placeholder="Food name"
+                      value={productName}
+                      name="productName"
+                      onChange={handleProductChange}
                     />
                   </div>
                   <div className="mb-3">
@@ -218,6 +261,9 @@ const AdminDashboard = () => {
                       type="text"
                       placeholder="Food description"
                       rows={3}
+                      value={productDesc}
+                      name="productDesc"
+                      onChange={handleProductChange}
                     ></textarea>
                   </div>
                   <div className="mb-3">
@@ -226,6 +272,9 @@ const AdminDashboard = () => {
                       className="form-control"
                       type="text"
                       placeholder="0.00"
+                      value={productPrice}
+                      name="productPrice"
+                      onChange={handleProductChange}
                     />
                   </div>
                   <div className="mb-3 row">
@@ -234,16 +283,18 @@ const AdminDashboard = () => {
                       <select
                         className="form-select"
                         aria-label="Category select"
-                        defaultValue="selected"
+                        name="productCategory"
+                        onChange={handleProductChange}
                       >
-                        <option disabled value="selected">
+                        <option disabled value="">
                           Select a category
                         </option>
-                        {categories?.map(c => (
-                          <option value={c._id} key={c._id}>
-                            {c.category}
-                          </option>
-                        ))}
+                        {categories &&
+                          categories.map(c => (
+                            <option value={c._id} key={c._id}>
+                              {c.category}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="col-md-6 form-group">
@@ -254,6 +305,9 @@ const AdminDashboard = () => {
                         min={1}
                         max={1000}
                         placeholder={1}
+                        value={productQty}
+                        name="productQty"
+                        onChange={handleProductChange}
                       />
                     </div>
                   </div>
