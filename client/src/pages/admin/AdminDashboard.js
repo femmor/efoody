@@ -119,6 +119,8 @@ const AdminDashboard = () => {
     } else if (isEmpty(productQty)) {
       setErrorMsg('Please add a product quantity');
     } else {
+      setLoading(true);
+
       let formData = new FormData();
 
       formData.append('productImage', productImage);
@@ -129,8 +131,22 @@ const AdminDashboard = () => {
       formData.append('productQty', productQty);
 
       createProduct(formData)
-        .then(response => console.log('Server response: ', response))
-        .catch(error => console.log(error));
+        .then(response => {
+          setLoading(false);
+          setProductData({
+            productImage: null,
+            productName: '',
+            productDesc: '',
+            productPrice: '',
+            productCategory: '',
+            productQty: '',
+          });
+          setSuccessMsg(response.data.successMessage);
+        })
+        .catch(error => {
+          setLoading(false);
+          setErrorMsg(error.response.data.errorMessage);
+        });
     }
   };
 
