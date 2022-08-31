@@ -84,8 +84,6 @@ const FoodModal = () => {
     } else if (isEmpty(productQty)) {
       setErrorMsg('Please add a product quantity');
     } else {
-      setLoading(true);
-
       let formData = new FormData();
 
       formData.append('productImage', productImage);
@@ -94,6 +92,8 @@ const FoodModal = () => {
       formData.append('productCategory', productCategory);
       formData.append('productPrice', productPrice);
       formData.append('productQty', productQty);
+
+      setLoading(true);
 
       createProduct(formData)
         .then(response => {
