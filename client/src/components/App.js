@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getCategories } from '../redux/actions/categoriesActions';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header, AdminRoutes, UserRoutes } from '../components';
 import {
@@ -10,6 +13,12 @@ import {
 } from '../pages';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
   return (
     <>
       <Router>
